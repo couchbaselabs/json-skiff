@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 Couchbase, Inc.
+ * Copyright 2025 Couchbase, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;
@@ -82,6 +83,24 @@ public final class JsonStreamParser implements Closeable {
   }
 
   /**
+   * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
+   * @throws RuntimeException if a value consumer throws an exception
+   */
+  public void feed(InputStream is, int bufferSizeInBytes) {
+    // borrow the scratch buffer!
+    scratchBuffer.clear().ensureWritable(bufferSizeInBytes);
+
+    try {
+      int bytesRead;
+      while ((bytesRead = is.read(scratchBuffer.array())) != -1) {
+        feed(scratchBuffer.array(), 0, bytesRead);
+      }
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
+  }
+
+  /**
    * Consumes all readable bytes from the given buffer. Searches for values matching
    * the configured JSON pointers and invokes callbacks for any matches.
    * <p>
@@ -102,8 +121,7 @@ public final class JsonStreamParser implements Closeable {
   }
 
   public void feed(ByteBuffer input) {
-    scratchBuffer.clear();
-    scratchBuffer.writeBytes(input);
+    scratchBuffer.clear().writeBytes(input);
     feed(scratchBuffer.array(), 0, scratchBuffer.readableBytes());
   }
 
