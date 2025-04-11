@@ -1,6 +1,6 @@
 # json-skiff
 
-A streaming JSON Pointer locator.
+A streaming [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) evaluator.
 
 1. Give it a list of JSON pointers and callbacks.
 2. Feed it JSON.
