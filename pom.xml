@@ -22,7 +22,7 @@
         <!-- When deploying, automatically promote artifacts from staging repository -->
         <autoReleaseAfterClose>true</autoReleaseAfterClose>
     </properties>
-    
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -94,6 +94,21 @@
                 <version>3.14.0</version>
                 <configuration>
                     <release>8</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>com.couchbase.jsonskiff</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
