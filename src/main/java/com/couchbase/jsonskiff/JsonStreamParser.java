@@ -86,6 +86,14 @@ public final class JsonStreamParser implements Closeable {
    * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
    * @throws RuntimeException if a value consumer throws an exception
    */
+  public void feed(InputStream is) {
+    feed(is, 8 * 1024);
+  }
+
+  /**
+   * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
+   * @throws RuntimeException if a value consumer throws an exception
+   */
   public void feed(InputStream is, int bufferSizeInBytes) {
     // borrow the scratch buffer!
     scratchBuffer.clear().ensureWritable(bufferSizeInBytes);
