@@ -94,7 +94,7 @@ There's an overload of `parser.feed()` that takes a ByteBuffer.
 ### Selecting array elements
 
 Normally, a `-` in a JSON Pointer refers to the non-existent element past the end of an array.
-`json-skiff` bends this rule, and interprets `-` as matching _every_ array element.
+`json-skiff` bends this rule and interprets `-` as matching _every_ array element.
 
 In the previous example we used `/friends/-` to select every element of the `friends` array.
 
@@ -121,12 +121,12 @@ A callback for `/widgets/-/serialNumber` is invoked once for `"123"` and once fo
 
 If the target field value is a JSON Array or Object, use `MatchedValue.bytes()` to get the bytes of the Array / Object, and use your favorite JSON processing library to parse it.
 
-This is also the recommended way to handle a value whose type is not known at runtime.
+This is also the recommended way to handle a value whose type is not known ahead of time.
 
 
 ### Nullable values
 
-If you expect a matched value might be null, check for null by calling `MatchedValue.isNull()` before calling any of the `read*` methods to avoid `NullPointerException`.
+If you expect a matched value might be null, check for null by calling `MatchedValue.isNull()` before calling any of the `read*` methods, otherwise you'll get a `NullPointerException`.
 
 
 ## FAQ
