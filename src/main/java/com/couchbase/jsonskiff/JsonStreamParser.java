@@ -83,6 +83,12 @@ public final class JsonStreamParser implements Closeable {
   }
 
   /**
+   * Parses the contents of the stream, using the default buffer size
+   * for copying data from the stream.
+   * <p>
+   * Searches for values matching the configured JSON pointers
+   * and invokes callbacks for any matches.
+   *
    * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
    * @throws RuntimeException if a value consumer throws an exception
    */
@@ -91,6 +97,12 @@ public final class JsonStreamParser implements Closeable {
   }
 
   /**
+   * Parses the contents of the stream, using a buffer of the specified size (in bytes)
+   * for copying data from the stream.
+   * <p>
+   * Searches for values matching the configured JSON pointers
+   * and invokes callbacks for any matches.
+   *
    * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
    * @throws RuntimeException if a value consumer throws an exception
    */
@@ -109,10 +121,10 @@ public final class JsonStreamParser implements Closeable {
   }
 
   /**
-   * Consumes all readable bytes from the given buffer. Searches for values matching
-   * the configured JSON pointers and invokes callbacks for any matches.
+   * Parses the specified range of the given byte array.
    * <p>
-   * Call this method repeatedly as more input becomes available.
+   * Searches for values matching the configured JSON pointers
+   * and invokes callbacks for any matches.
    *
    * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
    * @throws RuntimeException if a value consumer throws an exception
@@ -128,6 +140,15 @@ public final class JsonStreamParser implements Closeable {
     }
   }
 
+  /**
+   * Parses the contents of the given buffer.
+   * <p>
+   * Searches for values matching the configured JSON pointers
+   * and invokes callbacks for any matches.
+   *
+   * @throws UncheckedIOException if malformed JSON is detected in this chunk of input
+   * @throws RuntimeException if a value consumer throws an exception
+   */
   public void feed(ByteBuffer input) {
     scratchBuffer.clear().writeBytes(input);
     feed(scratchBuffer.array(), 0, scratchBuffer.readableBytes());
@@ -138,7 +159,7 @@ public final class JsonStreamParser implements Closeable {
    * After calling this method no more data can be fed and parser assumes
    * no more data will be available.
    *
-   * @throws UncheckedIOException if malformed JSON is detected in this chunk of input.
+   * @throws UncheckedIOException if malformed JSON is detected in the final chunk of input.
    * @throws RuntimeException if a value consumer throws an exception
    */
   public void endOfInput() {
