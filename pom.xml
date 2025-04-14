@@ -6,7 +6,7 @@
 
     <groupId>com.couchbase</groupId>
     <artifactId>json-skiff</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>json-skiff</name>
     <description>A streaming JSON Pointer evaluator</description>
