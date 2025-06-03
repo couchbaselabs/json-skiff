@@ -127,6 +127,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Require profile `snapshot` or `release` when deploying.
+                 Having explicit profiles (instead of relying on deploy plugin's
+                 automatic snapshot/release routing) prevents the "on push"
+                 snapshot publish action from accidentally publishing a release version. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-deploy-has-active-profile</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProfileIdsExist/>
+                                <requireActiveProfile>
+                                    <profiles>snapshot,release</profiles>
+                                    <all>false</all>
+                                </requireActiveProfile>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -175,33 +202,6 @@
                         <goals>
                             <goal>clean</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Require profile `snapshot` or `release` when deploying.
-                 Having explicit profiles (instead of relying on deploy plugin's
-                 automatic snapshot/release routing) prevents the "on push"
-                 snapshot publish action from accidentally publishing a release version. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-deploy-has-active-profile</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireProfileIdsExist/>
-                                <requireActiveProfile>
-                                    <profiles>snapshot,release</profiles>
-                                    <all>false</all>
-                                </requireActiveProfile>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
