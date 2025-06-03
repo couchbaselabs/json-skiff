@@ -137,7 +137,7 @@ Sorry, this library does not support JSON pointers that reference specific array
 
 ### How to do more complex matching?
 
-If a JSON pointer isn't sufficient, take a look at [JsonSurfer](https://github.com/wanglingsong/JsonSurfer) which lets you use JSON Path to specify complex matching rules.
+If a JSON pointer isn't sufficient, take a look at [JsonSurfer](https://github.com/wanglingsong/JsonSurfer) which lets you use JSONPath to specify complex matching rules.
 
 ### Is this library an officially supported Couchbase product?
 
