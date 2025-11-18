@@ -16,7 +16,7 @@
 
 package com.couchbase.jsonskiff;
 
-import com.fasterxml.jackson.core.JsonToken;
+import tools.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -184,7 +184,7 @@ class StructureNavigator {
     @Override
     public void accept(JsonToken token) {
       switch (token) {
-        case FIELD_NAME:
+        case PROPERTY_NAME:
           transitionTo(readingValue);
           return;
 

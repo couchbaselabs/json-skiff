@@ -16,8 +16,8 @@
 
 package com.couchbase.jsonskiff;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
 import java.io.EOFException;
 import java.io.IOException;

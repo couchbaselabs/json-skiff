@@ -16,11 +16,12 @@
 
 package com.couchbase.jsonskiff;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.async.ByteArrayFeeder;
 import org.jspecify.annotations.Nullable;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.core.ObjectReadContext;
+import tools.jackson.core.async.ByteArrayFeeder;
+import tools.jackson.core.json.JsonFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -73,13 +74,8 @@ public final class JsonStreamParser implements Closeable {
 
   private JsonStreamParser(PathTree pathTree) {
     this.navigator = new StructureNavigator(this, pathTree);
-
-    try {
-      this.parser = jsonFactory.createNonBlockingByteArrayParser();
-      this.feeder = (ByteArrayFeeder) parser.getNonBlockingInputFeeder();
-    } catch (IOException shouldNotHappen) {
-      throw new UncheckedIOException(shouldNotHappen);
-    }
+    this.parser = jsonFactory.createNonBlockingByteArrayParser(ObjectReadContext.empty());
+    this.feeder = (ByteArrayFeeder) parser.nonBlockingInputFeeder();
   }
 
   /**
@@ -244,11 +240,7 @@ public final class JsonStreamParser implements Closeable {
    */
   @Override
   public void close() {
-    try {
-      parser.close();
-    } catch (IOException shouldNotHappen) {
-      throw new UncheckedIOException("Jackson non-blocking JsonParser threw an exception on close, which is totally unexpected.", shouldNotHappen);
-    }
+    parser.close();
   }
 
   /**
